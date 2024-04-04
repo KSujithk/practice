@@ -1,0 +1,6 @@
+[ubuntu] 
+3.24.232.98  
+package_name:
+  - tree
+  - git
+  - apache2
