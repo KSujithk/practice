@@ -1,6 +1,6 @@
 ---
 - name: install tree git apache
-  hosts: all
+  hosts: webserver
   become: yes
   tasks:
     - name: fail on other os family other thah Debian and Redhat
@@ -19,7 +19,7 @@
         state: started
     - name: install php info
       ansible.builtin.apt:
-        name: "{{ package_info }}"
+        name: "{{ php_packages }}"
         state: present
     - name: enable and start apache
       ansible.builtin.service:
