@@ -1,5 +1,5 @@
 ---
-- name: install tree git apache
+- name: install apache and php
   hosts: webserver
   become: yes
   tasks:
