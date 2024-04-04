@@ -3,13 +3,35 @@
   hosts: all
   become: yes
   tasks:
-    - name: install all of them
+    - name: fail on other os family other thah Debian and Redhat
+      ansible.builtin.fail:
+        msg: only work on debian and redhat
+      when: ansible_facts['os_family'] != 'Debian' and ansible_facts['os_family'] != 'Redhat'
+    - name: install apache
       ansible.builtin.apt:
-        name: tree
+        name: "{{ package }}"
+        update_cache: yes
         state: present
-      when: ansible_facts['os_family']=="Debian"
-    - name: enable and start
-      ansible.builtin.systemd_service:
-        name: tree
+    - name: enable and start apache
+      ansible.builtin.service:
+        name: "{{ package }}"
+        enabled: yes
+        state: started
+    - name: install php info
+      ansible.builtin.apt:
+        name: "{{ package_info }}"
+        state: present
+    - name: enable and start apache
+      ansible.builtin.service:
+        name: "{{ package }}"
+        enabled: yes
+        state: started
+    - name: copy
+      ansible.builtin.copy:
+        src: info.php
+        dest: /var/www/html/info.php
+    - name: enable and start apache
+      ansible.builtin.service:
+        name: "{{ package }}"
         enabled: yes
         state: started
