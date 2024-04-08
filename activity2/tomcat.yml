@@ -31,8 +31,8 @@
     - ansible.builtin.debug:
         msg: "user {{ user_name }} has been created"
     - name: download tomcat
-      ansible.builtin.get_url:
+      ansible.builtin.unarchive:
         url: '{{ tomcat_url }}'
-        dest: /tmp/apache-tomcat-10.0.10.tar.gz
+        dest: '{{ home_dir }}'
     - ansible.builtin.debug:
-        msg: "tomcat is downloaded to /tmp/apache-tomcat-10.0.10.tar.gz"
+        msg: "tomcat is downloaded and extracted to {{ home_dir }}"
