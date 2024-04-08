@@ -22,6 +22,7 @@
         msg: "user {{ group }} has been created"
     - name: tomcat user
       ansible.builtin.user:
+        create_home: yes
         name: '{{ user_name }}'
         home: '{{ home_dir }}'
         shell: '{{ user_shell }}'
@@ -32,7 +33,7 @@
         msg: "user {{ user_name }} has been created"
     - name: download tomcat
       ansible.builtin.unarchive:
-        url: '{{ tomcat_url }}'
+        src: '{{ tomcat_url }}'
         dest: '{{ home_dir }}'
         remote_src: yes
     - ansible.builtin.debug:
