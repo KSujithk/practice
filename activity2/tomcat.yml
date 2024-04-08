@@ -1,0 +1,38 @@
+- name: tomcat installation
+  hosts: all
+  become: yes
+  tasks:
+    - name: fail unsupported files
+      ansible.builtin.fail:
+        msg: The system fails if it is'nt ubuntu
+      when: ansible_facts['distribution'] != 'Ubuntu'
+    - name: install java
+      ansible.builtin.apt:
+        name: '{{ java_package_name }}'
+        update_cache: yes
+        state: present
+    - ansible.builtin.debug:
+        msg: "'{{ java_package_name }}' has been downloaded"
+    - name: group name
+      ansible.builtin.group:
+        name: '{{ group }}'
+        system: yes
+        state: present
+    - ansible.builtin.debug:
+        msg: "user {{ group }} has been created"
+    - name: tomcat user
+      ansible.builtin.user:
+        name: '{{ user_name }}'
+        home: '{{ home_dir }}'
+        shell: '{{ user_shell }}'
+        group: '{{ group }}'
+        system: yes
+        state: present
+    - ansible.builtin.debug:
+        msg: "user {{ user_name }} has been created"
+    - name: download tomcat
+      ansible.builtin.get_url:
+        url: '{{ tomcat_url }}'
+        dest: /tmp/apache-tomcat-10.0.10.tar.gz
+    - ansible.builtin.debug:
+        msg: "tomcat is downloaded to /tmp/apache-tomcat-10.0.10.tar.gz"

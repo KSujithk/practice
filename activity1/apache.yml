@@ -20,7 +20,7 @@
         state: present
       notify:
         - restart apache
-    - name: copy
+    - name: copy info.php
       ansible.builtin.copy:
         src: info.php
         dest: /var/www/html/info.php
@@ -35,4 +35,4 @@
     - name: restart apache
       ansible.builtin.service:
         name: "{{ package }}"
-        state: started
+        state: restarted
